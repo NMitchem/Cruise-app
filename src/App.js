@@ -5,6 +5,7 @@ import SignUp from './components/SignUp';
 import Login from './components/Login';
 import Preferences from './components/Preferences';
 import Itinerary from './components/Itinerary';
+import Home from './components/Home';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -12,27 +13,29 @@ function App() {
 
   // Determine the component to show based on the user's state
   const getComponent = () => {
-    if (!user) return <Login />;
-    // You can add more conditions here as your app grows:
-    // e.g., if (!userPreferencesSet) return <Preferences />;
+    if (!user) return <Home />;
     return <Itinerary />;
   };
+  console.log("setUser in App.js:", setUser);
 
   return (
     <Router>
       <div className='App'>
         <Switch>
-          {/* Pass the setUser prop to SignUp */}
-          <Route path='/signup'>
-            <SignUp setUser={setUser} />
-          </Route>
+          {/* Pass setUser prop to SignUp and Login */}
           <Route path='/login'>
             <Login setUser={setUser} />
+          </Route>
+          <Route path='/signup'>
+            <SignUp setUser={setUser} />
           </Route>
           <Route path='/preferences'>
             <Preferences setItineraryPage={setItineraryPage} />
           </Route>
           <Route path='/itinerary' component={Itinerary} />
+          <Route path='/home'>  
+            <Home /> 
+          </Route>
           <Route path='/'>{getComponent()}</Route>
         </Switch>
       </div>
