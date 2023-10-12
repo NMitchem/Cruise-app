@@ -10,15 +10,15 @@ function SignUp({ setUser }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
         // Store the user details in local storage as a mock database
-        localStorage.setItem('userEmail', JSON.stringify(formData));
+        // localStorage.setItem('userEmail', JSON.stringify(formData));
         localStorage.setItem('currentUser', JSON.stringify(formData));
-
+        
         // Automatically log the user in and navigate to preferences
         setUser(formData);
-        // Navigate to the preferences page
         setLocation('/preferences');
+        // Navigate to the preferences page
+        console.log(setUser);
     };
 
     return (

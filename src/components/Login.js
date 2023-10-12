@@ -8,13 +8,14 @@ function Login({ setUser }) {
     const [, setLocation] = useLocation();
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault();  
+        const storedUserData = JSON.parse(localStorage.getItem('currentUser'));
+        const storedUserEmail = storedUserData.email
 
-        const storedUserData = localStorage.getItem('currentUser').email;
-        if (storedUserData) {
-            setUser(storedUserData);
+        if (storedUserData && storedUserEmail) {
+          setUser(storedUserData);
             setLocation('/preferences');
-        } 
+          } 
         // If login fails, you might want to show an alert or some indication to the user
     };
 
