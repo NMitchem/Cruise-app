@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useLocation } from 'wouter';
+import axios from 'axios'; 
 
 function Preferences({ setItineraryPage }) {
   const [formData, setFormData] = useState({
@@ -31,29 +32,49 @@ function Preferences({ setItineraryPage }) {
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [, setLocation] = useLocation();
 
-  //This will be where I add logic to send preferences to watsonx
-  // const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     // TODO: Send formData and selectedActivities to the backend
-  //     setItineraryPage(true);
-  //     setLocation('/itinerary');
+  // **** OLD, will delete after we get the api calls working
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   // Mock database: Save user preferences in local storage
+  //   const userEmail = JSON.parse(localStorage.getItem('currentUser')).email;
+  //   localStorage.setItem(
+  //     `preferences_${userEmail}`,
+  //     JSON.stringify({
+  //       formData,
+  //       selectedActivities
+  //     })
+  //   );
+
+  //   setItineraryPage(true);
+  //   setLocation('/itinerary');
   // };
-  const handleSubmit = (e) => {
+
+  // Post selections to flask app to be ingested in the model
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Mock database: Save user preferences in local storage
-    const userEmail = JSON.parse(localStorage.getItem('currentUser')).email;
-    localStorage.setItem(
-      `preferences_${userEmail}`,
-      JSON.stringify({
-        formData,
-        selectedActivities
-      })
-    );
-
-    setItineraryPage(true);
-    setLocation('/itinerary');
+  
+    // Prepare the data to be sent to the server
+    const userPrefs = {
+      formData,
+      selectedActivities
+    };
+  
+    try {
+      // Sending the data to the Flask API endpoint
+      const response = await axios.post('http://localhost:5001/api/run-script', userPrefs);
+      console.log('Server Response: ', response.data);
+  
+      // If successful, proceed to set the itinerary page - we may need to add a timeout here to delay things while model processes
+      // TODO - add setTimeout logic later
+      setItineraryPage(true);
+      setLocation('/itinerary');
+  
+    } catch (error) {
+      console.error('There was an error sending the data', error);
+    }
   };
+
   return (
     // Center the card both vertically and horizontally on the screen
     <div
