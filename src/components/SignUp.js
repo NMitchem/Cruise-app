@@ -17,7 +17,7 @@ function SignUp({ setUser }) {
     // localStorage.setItem('userEmail', JSON.stringify(formData));
     localStorage.setItem('currentUser', JSON.stringify(formData));
 
-    // Automatically log the user in and navigate to preferences
+    // Automatically log the user in and navig  ate to preferences
     setUser(formData);
     setLocation('/preferences');
   };
