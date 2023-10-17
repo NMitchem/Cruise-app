@@ -4,16 +4,18 @@ import { Card, Table, Alert } from 'react-bootstrap';
 function Itinerary() {
   const [schedule, setSchedule] = useState([]);
   const [notAllActivities, setNotAllActivities] = useState(false);
-
+  const itinerary = JSON.parse(localStorage.getItem('itinerary').replace("/", ""));
+  console.log('itinerary: ', itinerary);
   useEffect(() => {
     const userEmail = JSON.parse(localStorage.getItem('currentUser')).email;
     const preferences = JSON.parse(
       localStorage.getItem(`preferences_${userEmail}`)
     );
 
+    console.log('preferences: ', preferences);
     if (preferences) {
       const { selectedActivities } = preferences;
-
+      console.log('selectedActivities: ', selectedActivities);
       const slots = [
         { time: '8:00 - 9:00', activity: 'Breakfast' },
         { time: '9:00 - 10:00' },
@@ -74,10 +76,10 @@ function Itinerary() {
               </tr>
             </thead>
             <tbody>
-              {schedule.map((event) => (
-                <tr key={event.time}>
-                  <td>{event.time}</td>
-                  <td>{event.activity}</td>
+              {Object.entries(itinerary).map(([key, value]) => (
+                <tr key={key}>
+                  <td>{typeof key === 'string' ? key : String(key)}</td>
+                  <td>{typeof value === 'string' ? value : String(value)}</td>
                 </tr>
               ))}
             </tbody>

@@ -30,6 +30,7 @@ function Preferences({ setItineraryPage }) {
     'bbqing'
   ];
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const [response, setResponse] = useState(null);
   const [, setLocation] = useLocation();
 
   // **** OLD, will delete after we get the api calls working
@@ -63,10 +64,14 @@ function Preferences({ setItineraryPage }) {
     try {
       // Sending the data to the Flask API endpoint
       const response = await axios.post('http://localhost:5001/api/run-script', userPrefs);
+      console.log('Server Response: ', response.data.result);
+      //setResult(response.data.result);
+      setResponse(response);
       console.log('Server Response: ', response.data);
   
       // If successful, proceed to set the itinerary page - we may need to add a timeout here to delay things while model processes
       // TODO - add setTimeout logic later
+      localStorage.setItem('itinerary', JSON.stringify(response.data.result));
       setItineraryPage(true);
       setLocation('/itinerary');
   
