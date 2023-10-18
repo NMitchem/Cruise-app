@@ -4,7 +4,7 @@ import { Router, Route, Switch } from 'wouter';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import Preferences from './components/Preferences';
-import Itinerary from './components/Itinerary';
+import Itinerary from './components/Itinerary1';
 import Home from './components/Home';
 
 function App() {
